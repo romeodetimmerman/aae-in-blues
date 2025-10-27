@@ -197,6 +197,11 @@ def make_data(data_raw, context_raw, metadata_raw):
     # convert columns names to snake case
     df_final.rename(columns=lambda x: x.lower().replace(" ", "_"), inplace=True)
 
+    # convert variable and value column names
+    df_final.rename(
+        columns={"variable": "aae_feature", "value": "aae_realization"}, inplace=True
+    )
+
     # export interim dataframe
     df_final.to_csv(
         "../../data/interim/corpus_data_pre_processed.csv",
