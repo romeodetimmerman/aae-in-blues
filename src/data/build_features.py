@@ -31,7 +31,7 @@ y = df["aae_realization"]
 # keep artist to allow learning artist-level patterns across different songs
 X = df.drop(columns=["aae_realization", "song_id", "song"])
 
-print("=== dataset overview ===")
+print("dataset overview")
 print(f"total tokens: {len(df)}")
 print(f"unique songs: {df['song_id'].nunique()}")
 print(f"class distribution: {y.value_counts(normalize=True).to_dict()}")
@@ -64,7 +64,7 @@ X_test = X_test.reset_index(drop=True)
 y_test = y_test.reset_index(drop=True)
 
 # diagnostic information
-print("=== song-based split results ===")
+print("song-based split results")
 print(f"train songs: {song_groups.iloc[train_val_idx].iloc[train_idx].nunique()}")
 print(f"val songs: {song_groups.iloc[train_val_idx].iloc[val_idx].nunique()}")
 print(f"test songs: {song_groups.iloc[test_idx].nunique()}")
