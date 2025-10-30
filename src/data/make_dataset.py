@@ -191,7 +191,8 @@ def make_data(data_raw, context_raw, metadata_raw):
 
     # drop redundant columns
     df_final.drop(
-        columns=["Created", "artist", "song", "type", "performance"], inplace=True
+        columns=["Created", "artist", "song", "type", "performance", "year"],
+        inplace=True,
     )
 
     # convert columns names to snake case
