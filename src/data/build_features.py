@@ -1,24 +1,32 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import GroupShuffleSplit
+from phonetic_features import add_phonetic_and_morph_features
 
 # set seed
 seed = 42
 np.random.seed(seed)
 
-# import data
-df = pd.read_csv("../../data/interim/corpus_data_pre_processed.csv")
-df.head()
+# import data and build phonetic features
+df_raw = pd.read_csv("../../data/interim/corpus_data_pre_processed.csv")
+df = add_phonetic_and_morph_features(
+    df_raw, zipfs_path="../../data/raw/subtlex_us.csv"
+)
 
-# check NAs in categorical columns
-cols = df.columns
-cat_cols = [col for col in df.columns if df[col].dtype == "object"]
-df.isna().sum()
+# replace NA in zipfs_frequency with 0
+df["zipfs_frequency"] = df["zipfs_frequency"].fillna(0)
 
 # fill NAs in categorical columns
-for col in cat_cols:
-    df[col] = df[col].fillna("")
-df.isna().sum()
+cat_cols = [col for col in df.columns if col not in ["zipfs_frequency"]]
+df[cat_cols] = df[cat_cols].fillna("NONE")
+
+# export pre-processed dataframe before train test splits
+df.to_csv("../../data/processed/corpus_data_processed.csv", index=False)
+
+# build train test splits
+# drop redundant columns
+cols_to_drop = ["word", "previous_word", "next_word", "previous_segment", "next_segment"]
+df = df.drop(columns=cols_to_drop)
 
 # create song identifier for grouping
 # ensures entire songs stay together in splits
@@ -27,6 +35,7 @@ song_groups = df["song_id"]
 
 # prepare features and target
 y = df["aae_realization"]
+
 # drop song_id (grouping variable) and song (prevents data leakage in song-based splits)
 # keep artist to allow learning artist-level patterns across different songs
 X = df.drop(columns=["aae_realization", "song_id", "song"])
@@ -91,3 +100,5 @@ X_test.to_csv("../../data/processed/X_test.csv", index=False)
 y_train.to_csv("../../data/processed/y_train.csv", index=False)
 y_val.to_csv("../../data/processed/y_val.csv", index=False)
 y_test.to_csv("../../data/processed/y_test.csv", index=False)
+
+print("train, val, and test sets exported")
