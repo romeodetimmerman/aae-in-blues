@@ -41,15 +41,18 @@ def train_model():
     seed = 42
 
     # load data
-    X_train = pd.read_csv("../../data/processed/X_train.csv", na_filter=False)
-    X_val = pd.read_csv("../../data/processed/X_val.csv", na_filter=False)
+    X_train = pd.read_csv("../../data/processed/X_train.csv")
+    X_val = pd.read_csv("../../data/processed/X_val.csv")
     y_train = pd.read_csv("../../data/processed/y_train.csv")
     y_val = pd.read_csv("../../data/processed/y_val.csv")
 
-    # list categorical features
-    cat_features = list(X_train.select_dtypes("object").columns)
-    for X in (X_train, X_val):
-        X[cat_features] = X[cat_features].astype("category")
+    # convert numerical features to float
+    num_features = ["zipfs_frequency"]
+    X_train[num_features] = X_train[num_features].astype(float)
+
+    # convert categorical features to category
+    cat_features = [c for c in X_train.columns if c not in num_features]
+    X_train[cat_features] = X_train[cat_features].astype("category")
 
     # create training and validation pools
     train_pool = Pool(X_train, y_train, cat_features=cat_features)
