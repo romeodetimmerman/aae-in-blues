@@ -43,10 +43,9 @@ def evaluate_model():
             "preds": y_pred,
         }
 
-    # generate predictions and evaluate thresholds
+    # generate predictions
     y_test_prob = model.predict_proba(X_test)[:, 1]
     tuned_stats = metrics_for_threshold(tuned_thr, y_test, y_test_prob)
-    default_stats = metrics_for_threshold(0.5, y_test, y_test_prob)
 
     print(f"\nusing tuned threshold: {tuned_stats['threshold']:.3f}")
     print("\ntest metrics (tuned threshold):")
@@ -60,34 +59,13 @@ def evaluate_model():
     print("\ntest confusion matrix (tuned):")
     print(tuned_stats["confusion"])
 
-    print(f"\nusing default threshold: {default_stats['threshold']:.3f}")
-    print("\ntest metrics (default 0.5):")
-    print(f"macro-F1: {default_stats['macro_f1']:.4f}")
-    print(f"weighted-F1: {default_stats['weighted_f1']:.4f}")
-    print(f"balanced accuracy: {default_stats['bal_acc']:.4f}")
-    print(f"ROC-AUC: {default_stats['roc_auc']:.4f}")
-    print(f"PR-AUC: {default_stats['pr_auc']:.4f}")
-    print("\ntest confusion matrix (default):")
-    print(default_stats["confusion"])
-
-    # print classification reports
+    # print classification report
     print("\ntest classification report (tuned):")
     print(classification_report(y_test, tuned_stats["preds"], digits=3))
 
-    print("\ntest classification report (default):")
-    print(classification_report(y_test, default_stats["preds"], digits=3))
-
-    # quick generalization check for tuned threshold
-    if tuned_stats["macro_f1"] >= default_stats["macro_f1"]:
-        print("\ntuned threshold generalizes: macro-F1 >= default 0.5")
-        best_stats = tuned_stats
-    else:
-        print("\ntuned threshold underperforms: macro-F1 < default 0.5")
-        best_stats = default_stats
-    
-    # plot confusion matrix with best threshold
+    # plot confusion matrix with tuned threshold
     plt.figure(figsize=(8, 6))
-    sns.heatmap(best_stats["confusion"], annot=True, fmt="d", cmap="Blues")
+    sns.heatmap(tuned_stats["confusion"], annot=True, fmt="d", cmap="Blues")
     plt.xlabel("Predicted")
     plt.ylabel("True")
     plt.title("Confusion Matrix")
