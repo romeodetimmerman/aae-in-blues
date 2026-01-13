@@ -1,0 +1,62 @@
+alembic @ file:///opt/miniconda3/conda-bld/alembic_1763718259724/work
+appdata==2.2.1
+asciitree==0.3.3
+Bottleneck @ file:///opt/miniconda3/conda-bld/bottleneck_1761937849374/work
+catboost @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_47lgi2sj8w/croot/catboost_1750356531337/work/catboost-1.2.8-cp310-cp310-macosx_11_0_universal2.whl#sha256=8409c8a2e547469070d73681aa615b5e0b0d78367203d201b2f2b25c33cdcbad
+certifi==2026.1.4
+charset-normalizer==3.4.4
+click==8.3.1
+cloudpickle @ file:///opt/miniconda3/conda-bld/cloudpickle_1764930350194/work
+colorlog @ file:///opt/miniconda3/conda-bld/colorlog_1762561200454/work
+contourpy @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_2cvjf0v4ux/croot/contourpy_1732540055997/work
+cycler @ file:///Users/ec2-user/croot/cycler_1766067937639/work
+Distance==0.1.3
+et_xmlfile==2.0.0
+fonttools @ file:///opt/miniconda3/conda-bld/fonttools_1765445198468/work
+g2p-en==2.1.0
+graphviz @ file:///var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_79vqrz925o/croot/python-graphviz_1739534132423/work
+greenlet @ file:///opt/miniconda3/conda-bld/greenlet_1757405398210/work
+idna==3.11
+inflect==7.5.0
+joblib @ file:///opt/miniconda3/conda-bld/joblib_1757926350579/work
+kiwisolver @ file:///opt/miniconda3/conda-bld/kiwisolver_1764159413598/work
+llvmlite @ file:///opt/miniconda3/conda-bld/llvmlite_1765874173625/work
+Mako @ file:///opt/miniconda3/conda-bld/mako_1758276741323/work
+MarkupSafe @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_1f_uj4vxik/croot/markupsafe_1738584045311/work
+matplotlib==3.10.7
+more-itertools==10.8.0
+morphemes==1.2.0
+narwhals @ file:///opt/miniconda3/conda-bld/narwhals_1760003492523/work
+nltk==3.9.2
+numba @ file:///opt/miniconda3/conda-bld/numba_1765905844463/work
+numexpr @ file:///opt/miniconda3/conda-bld/numexpr_1762165517928/work
+numpy @ file:///opt/miniconda3/conda-bld/numpy_and_numpy_base_1761579345363/work/dist/numpy-2.2.5-cp310-cp310-macosx_12_0_arm64.whl#sha256=cee7bef98ac83b78786789b80f44469231df1e3cf12ce327f909aa4ea0fcee88
+openpyxl==3.1.5
+optuna @ file:///Users/ec2-user/croot/optuna_1766068243005/work
+packaging @ file:///opt/miniconda3/conda-bld/packaging_1761049079158/work
+pandas @ file:///opt/miniconda3/conda-bld/pandas_1762332182781/work/dist/pandas-2.3.3-cp310-cp310-macosx_12_0_arm64.whl#sha256=15e77fd5caae22506c552ef9e15f2690708d3395500d8e3ac8ce5c5cf227c7a1
+pillow @ file:///opt/miniconda3/conda-bld/pillow_1762528235859/work
+plotly @ file:///opt/miniconda3/conda-bld/plotly_1764254819704/work
+pyparsing @ file:///opt/miniconda3/conda-bld/pyparsing_1763973787496/work
+python-dateutil @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_66ud1l42_h/croot/python-dateutil_1716495741162/work
+pytz @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_3bjczh6it0/croot/pytz_1752135865541/work
+PyYAML @ file:///opt/miniconda3/conda-bld/pyyaml_1763465492983/work
+regex==2025.11.3
+requests==2.32.5
+scikit-learn @ file:///opt/miniconda3/conda-bld/scikit-learn_1764838070583/work
+scipy @ file:///opt/miniconda3/conda-bld/scipy_1759222017998/work/dist/scipy-1.15.3-cp310-cp310-macosx_12_0_arm64.whl#sha256=2bf10786bb6d1accacbbad75fd71d804a9566614d7ee63392efe7ebd2474197e
+seaborn @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_74n8m1zz4r/croot/seaborn_1749110344248/work
+shap @ file:///opt/miniconda3/conda-bld/shap_1765286408514/work
+six @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_03myqm7p6o/croot/six_1744271511946/work
+slicer @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_8cofbef6rn/croot/slicer_1747291649880/work
+SQLAlchemy @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_64hfvudz6k/croot/sqlalchemy_1756710322669/work
+tabulate==0.9.0
+threadpoolctl @ file:///opt/miniconda3/conda-bld/threadpoolctl_1764361580557/work
+tinydb==4.8.2
+tomli @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_03b1up8uh3/croot/tomli_1753774598375/work
+tornado @ file:///Users/ec2-user/croot/tornado_1765992646290/work
+tqdm @ file:///opt/miniconda3/conda-bld/tqdm_1762863350713/work
+typeguard==4.4.4
+typing_extensions @ file:///private/var/folders/k1/30mswbxs7r1g6zwn8y4fyt500000gp/T/abs_dffmcwqo6o/croot/typing_extensions_1756281471323/work
+tzdata @ file:///croot/python-tzdata_1746123641790/work
+urllib3==2.6.2
