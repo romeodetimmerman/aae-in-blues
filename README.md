@@ -4,8 +4,7 @@ Romeo De Timmerman
 
 ## project summary
 
-insert project summary
-
+This study examines the stability of African American English (AAE) features in blues lyrics across different performance contexts. Using a corpus of 540 songs, each performed both live and in the studio by 45 artists from diverse sociocultural backgrounds and time periods, the study annotates eight phonological and lexico‑grammatical AAE features in 30,000+ tokens. Through descriptive statistics and gradient‑boosted decision tree modeling with SHAP explainability, the results show that AAE features are consistently employed in blues performance, with minimal systematic differences between live and studio recordings, song types, time periods, or artist backgrounds. Instead, AAE realization is primarily driven by linguistic factors such as segmental context and lexical frequency. The findings support the argument that AAE features function as robust stylistic conventions in the blues, viz. as indexical of artistic authenticity, and increasingly iconic of the genre itself.
 
 ## project structure
 
