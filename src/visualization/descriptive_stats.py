@@ -29,7 +29,7 @@ grammatical_features = [
 phonetic_df = df[df["aae_feature"].isin(phonetic_features)]
 grammatical_df = df[df["aae_feature"].isin(grammatical_features)]
 
-# %% shorter feature names 
+# %% shorter feature names
 short_feature_names = {
     "ing ultimas": "/ɪn/",
     "ai monophthongization": "/ai/",
@@ -118,16 +118,16 @@ plt.show()
 
 # %% mean outcome by feature and group
 group_order = [
-        "1960sAA",
-        "1960snonAA_US",
-        "1960snonAA_nonUS",
-        "1980sAA",
-        "1980snonAA_US",
-        "1980snonAA_nonUS",
-        "2010sAA",
-        "2010snonAA_US",
-        "2010snonAA_nonUS",
-    ]
+    "1960sAA",
+    "1960snonAA_US",
+    "1960snonAA_nonUS",
+    "1980sAA",
+    "1980snonAA_US",
+    "1980snonAA_nonUS",
+    "2010sAA",
+    "2010snonAA_US",
+    "2010snonAA_nonUS",
+]
 
 feature_order = [
     "/ɪn/",
@@ -171,7 +171,9 @@ g = sns.catplot(
 )
 g.set_xlabels("mean AAE realization")
 g.set_ylabels("AAE feature")
-plt.savefig("../../figures/descriptive/mean_outcome_by_feature_group_and_song_type.png", dpi=600)
+plt.savefig(
+    "../../figures/descriptive/mean_outcome_by_feature_group_and_song_type.png", dpi=600
+)
 plt.show()
 
 # %% mean outcome by feature, group and performance type
@@ -189,27 +191,33 @@ g = sns.catplot(
 )
 g.set_xlabels("mean AAE realization")
 g.set_ylabels("AAE feature")
-plt.savefig("../../figures/descriptive/mean_outcome_by_feature_group_and_performance_type.png", dpi=600)
+plt.savefig(
+    "../../figures/descriptive/mean_outcome_by_feature_group_and_performance_type.png",
+    dpi=600,
+)
 plt.show()
 
 # %% mean outcome by phonetic feature and social group
 phonetic_feature_order = sorted(phonetic_df["aae_feature"].unique(), reverse=False)
 plt.figure(figsize=(10, 5))
 sns.pointplot(
-    data=phonetic_df, 
-    x="aae_feature", 
+    data=phonetic_df,
+    x="aae_feature",
     order=phonetic_feature_order,
-    y="aae_realization", 
-    hue="social_group", 
-    dodge=False, 
-    errorbar="ci"
+    y="aae_realization",
+    hue="social_group",
+    dodge=False,
+    errorbar="ci",
 )
 sns.despine()
 plt.xlabel("")
 plt.ylabel("")
 plt.legend(loc="lower right", frameon=False)
 plt.ylim(0, 1)
-plt.savefig("../../figures/descriptive/mean_outcome_by_phonetic_feature_and_social_group.png", dpi=600)
+plt.savefig(
+    "../../figures/descriptive/mean_outcome_by_phonetic_feature_and_social_group.png",
+    dpi=600,
+)
 plt.show()
 
 # %% mean outcome by phonetic feature, context and social group
@@ -235,17 +243,22 @@ g.map(
     "aae_realization",
     order=phonetic_feature_order,
     errorbar="ci",
-    dodge=False
+    dodge=False,
 )
 g.add_legend(title="")
 g.set_axis_labels("", "")
 for ax in g.axes.flatten():
     ax.set_ylim(0, 1)
-plt.savefig("../../figures/descriptive/mean_outcome_by_phonetic_feature_context_and_social_group.png", dpi=600)
+plt.savefig(
+    "../../figures/descriptive/mean_outcome_by_phonetic_feature_context_and_social_group.png",
+    dpi=600,
+)
 plt.show()
 
 # %% mean outcome by grammatical feature, context and social group
-grammatical_feature_order = sorted(grammatical_df["aae_feature"].unique(), reverse=False)
+grammatical_feature_order = sorted(
+    grammatical_df["aae_feature"].unique(), reverse=False
+)
 col_order = sorted(grammatical_df["type"].unique(), reverse=True)
 row_order = sorted(grammatical_df["performance"].unique(), reverse=True)
 
@@ -267,14 +280,17 @@ g.map(
     "aae_realization",
     order=grammatical_feature_order,
     errorbar="ci",
-    dodge=False
+    dodge=False,
 )
 g.add_legend(title="")
 g.set_axis_labels("", "")
 for ax in g.axes.flatten():
     ax.set_ylim(0, 1.1)
     ax.set_yticks(np.arange(0, 1.01, 0.2))
-plt.savefig("../../figures/descriptive/mean_outcome_by_grammatical_feature_context_and_social_group.png", dpi=600)
+plt.savefig(
+    "../../figures/descriptive/mean_outcome_by_grammatical_feature_context_and_social_group.png",
+    dpi=600,
+)
 plt.show()
 
 # %% mean outcome by time, context and social group
@@ -290,18 +306,15 @@ g = sns.FacetGrid(
     row_order=row_order,
     col_order=col_order,
 )
-g.map(
-    sns.pointplot,
-    "time",
-    "aae_realization",
-    errorbar="ci",
-    dodge=False
-)
+g.map(sns.pointplot, "time", "aae_realization", errorbar="ci", dodge=False)
 g.add_legend(title="")
 g.set_axis_labels("", "")
 for ax in g.axes.flatten():
     ax.set_ylim(0, 1)
-plt.savefig("../../figures/descriptive/mean_outcome_by_time_context_and_social_group.png", dpi=600)
+plt.savefig(
+    "../../figures/descriptive/mean_outcome_by_time_context_and_social_group.png",
+    dpi=600,
+)
 plt.show()
 
 
@@ -336,7 +349,9 @@ g.set(
     xticks=[0, 0.25, 0.5, 0.75, 1],
     xticklabels=["0", "0,25", "0.5", "0.75", "1"],
 )
-plt.savefig("../../figures/descriptive/mean_outcome_by_artist_group_and_song_type.png", dpi=600)
+plt.savefig(
+    "../../figures/descriptive/mean_outcome_by_artist_group_and_song_type.png", dpi=600
+)
 plt.show()
 
 
@@ -372,19 +387,24 @@ g.set(
     xticklabels=["0", "0,25", "0.5", "0.75", "1"],
 )
 plt.savefig(
-    "../../figures/descriptive/mean_outcome_by_artist_group_and_performance_type.png", dpi=600
+    "../../figures/descriptive/mean_outcome_by_artist_group_and_performance_type.png",
+    dpi=600,
 )
 plt.show()
 
 # %% r deletion by next phoneme and social group
 df_r_deletion = phonetic_df[phonetic_df["aae_feature"] == "/r/"].copy()
 
+
 def classify_next_segment(x):
     if pd.isnull(x):
         return np.nan
     return "vowel" if x == "vowel" else "consonant"
 
-df_r_deletion["next_segment"] = df_r_deletion["next_phoneme_manner"].apply(classify_next_segment)
+
+df_r_deletion["next_segment"] = df_r_deletion["next_phoneme_manner"].apply(
+    classify_next_segment
+)
 
 plt.figure(figsize=(7, 7))
 sns.pointplot(
@@ -402,57 +422,100 @@ plt.xlabel("next segment")
 plt.ylabel("/r/ deletion")
 plt.legend(loc="lower right", frameon=False)
 plt.tight_layout()
-plt.savefig("../../figures/descriptive/r_deletion_by_next_segment_and_social_group.png", dpi=600)
+plt.savefig(
+    "../../figures/descriptive/r_deletion_by_next_segment_and_social_group.png", dpi=600
+)
 plt.show()
 
-# %% t deletion by word morphemes and social group
+# morphological status of the final coronal stop, ordered by the classic
+# coronal-stop-deletion prediction (deletion favored -> disfavored)
+morph_order = ["mono", "semiweak", "past"]
+
+# %% t deletion by final-stop morphology and social group
 df_t_deletion = phonetic_df[phonetic_df["aae_feature"] == "/t/"].copy()
-# remove tri+ words
-df_t_deletion = df_t_deletion[df_t_deletion["word_morphemes"] != "tri+"]
+# keep only the three ordered envelope classes (drop neg_contraction, 'and')
+df_t_deletion = df_t_deletion[df_t_deletion["final_stop_morph"].isin(morph_order)]
 
 plt.figure(figsize=(7, 7))
 sns.pointplot(
     data=df_t_deletion,
-    x="word_morphemes",
+    x="final_stop_morph",
     y="aae_realization",
     hue="social_group",
     errorbar="ci",
     dodge=False,
-    order=["mono", "bi"],
+    order=morph_order,
 )
 plt.xticks(rotation=45, ha="right")
 plt.ylim(0, 1)
-plt.title("/t/ deletion by word morphemes and social group")
-plt.xlabel("word morphemes")
+plt.title("/t/ deletion by final-stop morphology and social group")
+plt.xlabel("morphological status of final stop")
 plt.ylabel("/t/ deletion")
 plt.legend(loc="best", frameon=False)
 plt.tight_layout()
-plt.savefig("../../figures/descriptive/t_deletion_by_word_morphemes_and_social_group.png", dpi=600)
+plt.savefig(
+    "../../figures/descriptive/t_deletion_by_final_stop_morph_and_social_group.png",
+    dpi=600,
+)
 plt.show()
 
-# %% d deletion by word morphemes and social group
+# %% d deletion by final-stop morphology and social group
 df_d_deletion = phonetic_df[phonetic_df["aae_feature"] == "/d/"].copy()
-# remove tri+ words
-df_d_deletion = df_d_deletion[df_d_deletion["word_morphemes"] != "tri+"]
+# keep only the three ordered envelope classes (drop neg_contraction, 'and')
+df_d_deletion = df_d_deletion[df_d_deletion["final_stop_morph"].isin(morph_order)]
 
 plt.figure(figsize=(7, 7))
 sns.pointplot(
     data=df_d_deletion,
-    x="word_morphemes",
+    x="final_stop_morph",
     y="aae_realization",
     hue="social_group",
     errorbar="ci",
     dodge=False,
-    order=["mono", "bi"],
+    order=morph_order,
 )
 plt.xticks(rotation=45, ha="right")
 plt.ylim(0, 1)
-plt.title("/d/ deletion by word morphemes and social group")
-plt.xlabel("word morphemes")
+plt.title("/d/ deletion by final-stop morphology and social group")
+plt.xlabel("morphological status of final stop")
 plt.ylabel("/d/ deletion")
 plt.legend(loc="best", frameon=False)
 plt.tight_layout()
-plt.savefig("../../figures/descriptive/d_deletion_by_word_morphemes_and_social_group.png", dpi=600)
+plt.savefig(
+    "../../figures/descriptive/d_deletion_by_final_stop_morph_and_social_group.png",
+    dpi=600,
+)
+plt.show()
+
+# %% shared t/d deletion by final-stop morphology and social group
+# both coronal stops side by side, sharing a y axis
+df_td_deletion = phonetic_df[phonetic_df["aae_feature"].isin(["/t/", "/d/"])].copy()
+# keep only the three ordered envelope classes (drop neg_contraction, 'and')
+df_td_deletion = df_td_deletion[df_td_deletion["final_stop_morph"].isin(morph_order)]
+
+fig, axes = plt.subplots(1, 2, figsize=(15, 8), sharey=True)
+for ax, feat in zip(axes, ["/t/", "/d/"]):
+    sns.pointplot(
+        data=df_td_deletion[df_td_deletion["aae_feature"] == feat],
+        x="final_stop_morph",
+        y="aae_realization",
+        hue="social_group",
+        order=morph_order,
+        errorbar="ci",
+        dodge=0.3,
+        ax=ax,
+    )
+    ax.set_ylim(0, 1)
+    ax.set_title(f"{feat} deletion by final-stop morphology and social group")
+    ax.set_xlabel("morphological status of final stop")
+    ax.set_ylabel("deletion rate")
+    ax.legend(title="social group", frameon=False)
+sns.despine()
+plt.tight_layout()
+plt.savefig(
+    "../../figures/descriptive/td_deletion_by_final_stop_morph_and_social_group.png",
+    dpi=600,
+)
 plt.show()
 
 # %% plot most frequent words
