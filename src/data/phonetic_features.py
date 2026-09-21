@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import re
-from morphemes import Morphemes
 from g2p_en import G2p
 
 g2p = G2p()
@@ -59,9 +58,6 @@ palatals = {"Y"}
 velars = {"K", "G", "NG"}
 glottals = {"HH"}
 labiovelars = {"W"}
-
-morphemes: Morphemes | None = None
-morph_cache: dict[str, int | float] = {}
 
 
 def strip_stress(phoneme: str) -> str:
@@ -280,9 +276,7 @@ def extract_phoneme_context(row: pd.Series) -> pd.Series:
             }
         )
     prev_phoneme = phonemes[anchor_idx - 1] if anchor_idx - 1 >= 0 else None
-    next_phoneme = (
-        phonemes[anchor_idx + 1] if anchor_idx + 1 < len(phonemes) else None
-    )
+    next_phoneme = phonemes[anchor_idx + 1] if anchor_idx + 1 < len(phonemes) else None
     if normalized_feature == "post-vocalic r":
         if anchor_idx >= 0:
             for idx in range(anchor_idx - 1, -1, -1):
@@ -328,7 +322,7 @@ def previous_phoneme_manner(word: str):
 
     returns
     -------
-    class_label: str 
+    class_label: str
         np.nan if unavailable, vowel, nasal, liquid, glide, obstruent, other
     """
     phonemes = word_to_phonemes(word)
@@ -348,7 +342,7 @@ def next_phoneme_manner(word: str):
 
     returns
     -------
-    class_label: str 
+    class_label: str
         np.nan if unavailable, vowel, nasal, liquid, glide, obstruent, other
     """
     phonemes = word_to_phonemes(word)
@@ -439,116 +433,147 @@ def next_segment(word: str):
     return "vowel" if label == "vowel" else "consonant"
 
 
-INFLECTIONAL_SUFFIXES = {"ed", "ing", "s", "es"}
-NEG_SUFFIXES = {"n't"}
+############################################
+# morphological status of the final stop   #
+############################################
+
+TD_FEATURES = {"post-consonantal t", "post-consonantal d"}
+NOT_APPLICABLE = "not_applicable"
+
+# stems that precede -n't, used to catch negative contractions
+NEG_STEMS = {
+    "don",
+    "ain",
+    "can",
+    "won",
+    "didn",
+    "wouldn",
+    "wasn",
+    "weren",
+    "couldn",
+    "shouldn",
+    "haven",
+    "hasn",
+    "hadn",
+    "doesn",
+    "isn",
+    "aren",
+    "mustn",
+    "needn",
+    "mightn",
+}
+
+# high-frequency function word
+FUNCTION_WORDS = {"and"}
+
+# irregular "semiweak" pasts
+SEMIWEAK = {
+    "kept",
+    "left",
+    "lost",
+    "meant",
+    "felt",
+    "swept",
+    "went",
+    "sent",
+    "spent",
+    "bent",
+    "lent",
+    "dealt",
+    "dreamt",
+    "wept",
+    "crept",
+    "slept",
+    "built",
+    "burnt",
+    "spelt",
+    "spilt",
+    "learnt",
+    "told",
+    "sold",
+    "held",
+    "found",
+    "heard",
+    "understood",
+    "stood",
+}
+
+# words ending orthographically in -ed that are NOT a regular past
+MONO_ED_EXCEPTIONS = {
+    "need",
+    "hundred",
+    "sacred",
+    "wicked",
+    "naked",
+    "crooked",
+    "ragged",
+    "jagged",
+    "rugged",
+    "wretched",
+    "kindred",
+    "hatred",
+    "aged",
+    "blessed",
+    "beloved",
+}
 
 
-def normalize_for_morphemes(word: str) -> str:
+def normalize_word(word):
     """
-    normalize a word for morpheme parsing
+    lowercase a word and strip surrounding punctuation, keeping internal apostrophes so contractions stay intact
     """
     if not isinstance(word, str):
         return ""
     w = word.lower().strip()
-    w = re.sub(r"^[^a-z']+|[^a-z']+$", "", w)
-    return w
+    return re.sub(r"^[^a-z']+|[^a-z']+$", "", w)
 
 
-def morpheme_count_hybrid(word: str) -> float:
+def is_neg_contraction(w):
     """
-    estimate morpheme count with rule-based suffix checks
+    true if the word is a negative contraction
     """
-    if morphemes is None:
-        return np.nan
-    w = normalize_for_morphemes(word)
+    if w.endswith("n't"):
+        return True
+    base = w.replace("’", "").replace("'", "")
+    return any(base == stem or base == stem + "t" for stem in NEG_STEMS)
+
+
+def classify_final_stop(word):
+    """
+    label the morphological status of a word-final coronal stop as one of mono, semiweak, past, neg_contraction, or function_word
+    """
+    w = normalize_word(word)
     if not w:
         return np.nan
-    try:
-        parsed = morphemes.parse(w)
-    except Exception:
-        return np.nan
-    base_count = parsed.get("morpheme_count")
-    tree = parsed.get("tree", [])
-    if base_count is None:
-        return np.nan
-    count = int(base_count)
-    if w.endswith("n't"):
-        return 2.0
-    for suf in INFLECTIONAL_SUFFIXES:
-        if w.endswith(suf) and len(w) - len(suf) >= 2:
-            return float(max(count, 2))
-    root = None
-    if tree and "children" in tree[0]:
-        children = tree[0]["children"]
-        if children and "text" in children[0]:
-            root = children[0]["text"].lower()
-    if not root:
-        return float(count)
-    if not w.startswith(root):
-        return float(count)
-    suffix = w[len(root) :]
-    if suffix in NEG_SUFFIXES:
-        return 2.0
-    if suffix in INFLECTIONAL_SUFFIXES and len(root) >= 2:
-        return float(max(count, 2))
-    return float(count)
-
-
-def morpheme_count(word: str) -> int | float:
-    """
-    segment a word and return its morpheme count
-    """
-    if not isinstance(word, str) or not word.strip():
-        return np.nan
-    w = normalize_for_morphemes(word)
-    return morph_cache.get(w, np.nan)
-
-
-def word_morpheme_label(word: str):
-    """
-    label word by morpheme count: mono, bi, or tri+
-    """
-    count = morpheme_count(word)
-    if pd.isna(count):
-        return np.nan
-    if count <= 1:
+    if is_neg_contraction(w):
+        return "neg_contraction"
+    if w in FUNCTION_WORDS:
+        return "function_word"
+    if w in SEMIWEAK:
+        return "semiweak"
+    if w in MONO_ED_EXCEPTIONS:
         return "mono"
-    if count == 2:
-        return "bi"
-    return "tri+"
+
+    if w.endswith("ed") and len(w) > 3:
+        return "past"
+    return "mono"
 
 
-def build_morph_cache(df: pd.DataFrame) -> None:
+def final_stop_morph_label(row):
     """
-    precompute morpheme counts for word types
+    morphological class of the final coronal stop
     """
-    global morph_cache
-    type_words = df["word"].dropna().astype(str)
-    normalized_types = (
-        pd.Series(type_words)
-        .apply(normalize_for_morphemes)
-        .dropna()
-    )
-    normalized_types = normalized_types[normalized_types.str.len() > 0].unique()
-    morph_cache = {}
-    for idx, w in enumerate(normalized_types):
-        if idx % 100 == 0:
-            print(f"processing word {idx}/{len(normalized_types)}: {w}")
-        morph_cache[w] = morpheme_count_hybrid(w)
+    if normalize_feature(row.get("aae_feature", "")) not in TD_FEATURES:
+        return NOT_APPLICABLE
+    label = classify_final_stop(row.get("word", ""))
+    return NOT_APPLICABLE if pd.isna(label) else label
 
 
-def add_phonetic_and_morph_features(
-    df: pd.DataFrame, zipfs_path: str
-) -> pd.DataFrame:
+def add_phonetic_and_morph_features(df: pd.DataFrame, zipfs_path: str) -> pd.DataFrame:
     """
-    apply phoneme context, morpheme labels, and frequency mapping to dataframe
+    apply phoneme context, final-stop morphology, and frequency mapping to dataframe
     """
-    global morphemes
     df_enriched = df.copy()
-    print("loading morphemes")
-    morphemes = Morphemes()
-    print("morphemes loaded")
-    build_morph_cache(df_enriched)
 
     print("labeling words by phoneme context")
     context_df = df_enriched.apply(extract_phoneme_context, axis=1)
@@ -559,17 +584,16 @@ def add_phonetic_and_morph_features(
     df_enriched["previous_segment"] = context_df["prev_segment"]
     df_enriched["next_segment"] = context_df["next_segment"]
 
-    print("labeling words by morpheme count")
-    df_enriched["word_morphemes"] = df_enriched["word"].apply(word_morpheme_label)
+    print("labeling final-stop morphology in the t/d envelope")
+    df_enriched["final_stop_morph"] = df_enriched.apply(final_stop_morph_label, axis=1)
 
     print("mapping lexical frequency")
     zipfs_df = pd.read_csv(zipfs_path)
     zipfs_dict = dict(
         zip(zipfs_df["Word"].astype(str).str.lower(), zipfs_df["Zipf-value"])
     )
-    df_enriched["zipfs_frequency"] = df_enriched["word"].astype(str).str.lower().map(
-        zipfs_dict
+    df_enriched["zipfs_frequency"] = (
+        df_enriched["word"].astype(str).str.lower().map(zipfs_dict)
     )
 
     return df_enriched
-
