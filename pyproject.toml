@@ -1,0 +1,28 @@
+[project]
+name = "aae-in-blues"
+version = "0.1.0"
+description = "stability of African American English features in blues lyrics across performance contexts"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = { file = "LICENSE" }
+authors = [{ name = "Romeo De Timmerman" }]
+
+dependencies = [
+    # data wrangling and modeling
+    "pandas>=2.2",
+    "numpy>=2.2,<2.3",
+    "scikit-learn>=1.5",
+    "catboost>=1.2.7",
+    "optuna>=3.6",
+    # feature engineering (phonetics and morphology)
+    "g2p-en>=2.1",
+    "morphemes>=1.2",
+    # explainability and plotting
+    "shap>=0.46",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+    "scipy>=1.13",
+]
+
+[tool.uv]
+package = false
